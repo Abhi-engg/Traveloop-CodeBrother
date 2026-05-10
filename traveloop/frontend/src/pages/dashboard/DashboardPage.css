@@ -1,0 +1,598 @@
+/* ═══════════════════════════════════════════════════════════
+   Dashboard / Home Screen — Styles
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Page wrapper ─────────────────────────────────────── */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  animation: dashFadeIn 0.5s ease-out;
+}
+
+@keyframes dashFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Welcome Hero ─────────────────────────────────────── */
+.dash-hero {
+  position: relative;
+  border-radius: 1.5rem;
+  background: var(--indigo);
+  color: white;
+  padding: 2.25rem 2rem;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.dash-hero:hover {
+  transform: translateY(-2px);
+}
+
+.dash-hero__gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at top right, rgba(255, 107, 71, 0.35), transparent 55%),
+    radial-gradient(ellipse at bottom left, rgba(167, 139, 250, 0.25), transparent 55%);
+  pointer-events: none;
+}
+
+.dash-hero__content {
+  position: relative;
+  z-index: 1;
+}
+
+.dash-hero__greeting {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+.dash-hero__title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: white;
+  margin: 0.5rem 0 0;
+  line-height: 1.25;
+}
+
+@media (min-width: 640px) {
+  .dash-hero__title { font-size: 2.5rem; }
+  .dash-hero { padding: 2.75rem 2.5rem; }
+}
+
+.dash-hero__subtitle {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0.75rem 0 0;
+  max-width: 520px;
+  line-height: 1.6;
+}
+
+/* ─── Quick Actions ────────────────────────────────────── */
+.dash-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+.dash-action-btn {
+  border: none;
+  border-radius: 9999px;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+}
+
+.dash-action-btn--primary {
+  background: linear-gradient(135deg, var(--coral), var(--coral-sun));
+  color: white;
+}
+
+.dash-action-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -6px rgba(255, 107, 71, 0.5);
+}
+
+.dash-action-btn--secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+}
+
+.dash-action-btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+/* ─── Stats Row ────────────────────────────────────────── */
+.dash-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+
+@media (min-width: 640px) {
+  .dash-stats { grid-template-columns: repeat(4, 1fr); }
+}
+
+.dash-stat {
+  border-radius: 0.85rem;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.85rem 1rem;
+  backdrop-filter: blur(8px);
+  transition: background 0.2s ease;
+}
+
+.dash-stat:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.dash-stat__label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0;
+}
+
+.dash-stat__value {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0.3rem 0 0;
+  color: white;
+}
+
+/* ─── Main Grid (Trips + Sidebar) ──────────────────────── */
+.dash-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .dash-grid { grid-template-columns: 1.3fr 0.7fr; }
+}
+
+/* ─── Section Header ───────────────────────────────────── */
+.dash-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.dash-section-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--indigo);
+  margin: 0;
+}
+
+.dash-section-link {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--coral);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+.dash-section-link:hover {
+  color: var(--coral-soft);
+}
+
+/* ─── Trip Cards ───────────────────────────────────────── */
+.dash-trips-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dash-trip-card {
+  border-radius: 1.25rem;
+  border: 1px solid var(--border);
+  background: white;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.dash-trip-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -10px rgba(26, 16, 53, 0.12);
+  border-color: var(--coral);
+}
+
+.dash-trip-card__cover {
+  width: 56px;
+  height: 56px;
+  border-radius: 0.85rem;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.dash-trip-card__cover--placeholder {
+  width: 56px;
+  height: 56px;
+  border-radius: 0.85rem;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  font-size: 1.4rem;
+}
+
+.dash-trip-card__cover--placeholder:nth-child(1) {
+  background: linear-gradient(135deg, rgba(255, 107, 71, 0.12), rgba(255, 179, 71, 0.12));
+}
+
+.dash-trip-card__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.dash-trip-card__name {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--indigo);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dash-trip-card__meta {
+  font-size: 0.78rem;
+  color: var(--slate);
+  margin: 0.25rem 0 0;
+}
+
+.dash-trip-card__badge {
+  border-radius: 9999px;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  flex-shrink: 0;
+}
+
+.dash-trip-card__badge--upcoming {
+  background: linear-gradient(135deg, rgba(56, 178, 172, 0.12), rgba(56, 178, 172, 0.06));
+  color: var(--teal);
+}
+
+.dash-trip-card__badge--active {
+  background: linear-gradient(135deg, rgba(255, 107, 71, 0.12), rgba(255, 107, 71, 0.06));
+  color: var(--coral);
+}
+
+.dash-trip-card__badge--past {
+  background: rgba(26, 16, 53, 0.06);
+  color: var(--slate);
+}
+
+/* ─── Empty State ──────────────────────────────────────── */
+.dash-empty {
+  border-radius: 1.25rem;
+  border: 2px dashed var(--border);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dash-empty__icon {
+  font-size: 2.5rem;
+}
+
+.dash-empty__title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--indigo);
+  margin: 0;
+}
+
+.dash-empty__text {
+  font-size: 0.82rem;
+  color: var(--slate);
+  margin: 0;
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+.dash-empty__btn {
+  margin-top: 0.5rem;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.65rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  background: var(--indigo);
+  color: white;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.dash-empty__btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px -8px rgba(26, 16, 53, 0.35);
+}
+
+/* ─── Sidebar Cards ────────────────────────────────────── */
+.dash-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Upcoming Trip Card */
+.dash-upcoming {
+  border-radius: 1.5rem;
+  border: 1px solid var(--border);
+  background: white;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.dash-upcoming:hover {
+  box-shadow: 0 24px 48px -20px rgba(26, 16, 53, 0.15);
+}
+
+.dash-upcoming__label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--slate);
+  margin: 0;
+}
+
+.dash-upcoming__title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--indigo);
+  margin: 0.5rem 0 0;
+}
+
+.dash-upcoming__countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgba(56, 178, 172, 0.1), rgba(56, 178, 172, 0.05));
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--teal);
+}
+
+.dash-upcoming__details {
+  margin-top: 1rem;
+  font-size: 0.82rem;
+  color: var(--slate);
+  line-height: 1.6;
+}
+
+.dash-upcoming__mood {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.85rem;
+  background: linear-gradient(135deg, rgba(255, 107, 71, 0.08), rgba(255, 179, 71, 0.08));
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--indigo);
+}
+
+/* ─── Budget Highlights Card ───────────────────────────── */
+.dash-budget {
+  border-radius: 1.5rem;
+  border: 1px solid var(--border);
+  background: white;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.dash-budget:hover {
+  box-shadow: 0 8px 24px -8px rgba(26, 16, 53, 0.1);
+}
+
+.dash-budget__label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--slate);
+  margin: 0;
+}
+
+.dash-budget__title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--indigo);
+  margin: 0.5rem 0 0;
+}
+
+.dash-budget__amounts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.dash-budget__amount {
+  border-radius: 0.75rem;
+  padding: 0.65rem 0.85rem;
+}
+
+.dash-budget__amount--estimated {
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.08), rgba(167, 139, 250, 0.03));
+}
+
+.dash-budget__amount--actual {
+  background: linear-gradient(135deg, rgba(56, 178, 172, 0.08), rgba(56, 178, 172, 0.03));
+}
+
+.dash-budget__amount-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--slate);
+  margin: 0;
+}
+
+.dash-budget__amount-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--indigo);
+  margin: 0.2rem 0 0;
+  font-family: var(--font-mono);
+}
+
+.dash-budget__categories {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dash-budget__category {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+}
+
+.dash-budget__category-name {
+  color: var(--slate);
+  text-transform: capitalize;
+}
+
+.dash-budget__category-amount {
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: var(--indigo);
+}
+
+/* ─── Recommended Cities ───────────────────────────────── */
+.dash-cities {
+  border-radius: 1.5rem;
+  border: 1px solid var(--border);
+  background: white;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.dash-cities:hover {
+  box-shadow: 0 8px 24px -8px rgba(26, 16, 53, 0.1);
+}
+
+.dash-cities__label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--slate);
+  margin: 0;
+}
+
+.dash-cities__title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--indigo);
+  margin: 0.5rem 0 0;
+}
+
+.dash-cities__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .dash-cities__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.dash-city-chip {
+  border-radius: 0.85rem;
+  border: 1px solid var(--border);
+  padding: 0.7rem 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.dash-city-chip:hover {
+  border-color: var(--coral);
+  background: linear-gradient(135deg, rgba(255, 107, 71, 0.04), rgba(255, 179, 71, 0.04));
+  transform: translateY(-1px);
+}
+
+.dash-city-chip__flag {
+  font-size: 1.2rem;
+}
+
+.dash-city-chip__info {
+  min-width: 0;
+}
+
+.dash-city-chip__name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--indigo);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dash-city-chip__country {
+  font-size: 0.65rem;
+  color: var(--slate);
+  margin: 0.1rem 0 0;
+}
+
+/* ─── Loading Skeleton ─────────────────────────────────── */
+.dash-skeleton {
+  border-radius: 1.5rem;
+  background: linear-gradient(110deg, #f0ebe3 8%, #faf6f0 18%, #f0ebe3 33%);
+  background-size: 300% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.dash-skeleton--hero { height: 220px; }
+.dash-skeleton--card { height: 80px; border-radius: 1.25rem; }
+.dash-skeleton--sidebar { height: 160px; }
+
+@keyframes shimmer {
+  0%   { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}

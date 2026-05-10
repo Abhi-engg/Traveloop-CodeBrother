@@ -39,12 +39,19 @@ class Activity(models.Model):
 class Trip(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="trips")
     name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, default="")
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
+    cover_photo = models.ImageField(upload_to="trip_covers/", null=True, blank=True)
     budget_total = models.FloatField(default=0)
     visibility = models.CharField(max_length=50, default="private")
     share_token = models.UUIDField(null=True, blank=True)
     mood_tag = models.CharField(max_length=100, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+
+    class Meta:
+        ordering = ["-created_at", "-id"]
 
     def __str__(self) -> str:
         return f"{self.name} ({self.user_id})"
