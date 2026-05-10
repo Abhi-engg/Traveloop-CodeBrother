@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import BottomNav from "./components/BottomNav";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -6,8 +6,8 @@ import ActivitySearch from "./pages/ActivitySearch";
 import AdminPage from "./pages/AdminPage";
 import BudgetPage from "./pages/BudgetPage";
 import CitySearch from "./pages/CitySearch";
-import CreateTripPage from "./pages/CreateTripPage";
-import DashboardPage from "./pages/DashboardPage";
+import CreateTripPage from "./pages/create-trip";
+import DashboardPage from "./pages/dashboard";
 import ItineraryBuilder from "./pages/ItineraryBuilder";
 import ItineraryView from "./pages/ItineraryView";
 import LoginPage from "./pages/LoginPage";
@@ -22,7 +22,7 @@ const AppLayout = () => {
     <div className="min-h-screen bg-[var(--cream)] pb-24">
       <div className="absolute inset-x-0 top-0 h-72 bg-gradient-to-br from-[var(--coral)] via-[var(--coral-soft)] to-[var(--coral-sun)] opacity-15" />
       <header className="relative mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-        <div className="flex items-center gap-3">
+        <Link to="/" className="flex items-center gap-3" style={{ textDecoration: "none", color: "inherit" }}>
           <div className="grid h-10 w-10 place-items-center rounded-2xl bg-[var(--indigo)] text-white">
             TL
           </div>
@@ -34,14 +34,24 @@ const AppLayout = () => {
               Dream it. Plan it. Live it.
             </p>
           </div>
-        </div>
+        </Link>
         <div className="flex items-center gap-3 text-sm">
-          <button className="rounded-full border border-[var(--border)] px-4 py-2">
+          <Link
+            to="/trips/new"
+            className="rounded-full border border-[var(--border)] px-4 py-2"
+            style={{ textDecoration: "none", color: "inherit" }}
+            id="header-new-trip-btn"
+          >
             New trip
-          </button>
-          <button className="rounded-full bg-[var(--indigo)] px-4 py-2 text-white">
-            Share
-          </button>
+          </Link>
+          <Link
+            to="/trips"
+            className="rounded-full bg-[var(--indigo)] px-4 py-2 text-white"
+            style={{ textDecoration: "none" }}
+            id="header-trips-btn"
+          >
+            My Trips
+          </Link>
         </div>
       </header>
       <div className="relative mx-auto max-w-6xl px-6 pb-12">

@@ -1,4 +1,4 @@
-from datetime import date, time
+from datetime import date, datetime, time
 
 from ninja import Schema
 
@@ -36,6 +36,7 @@ class ActivityOut(ActivityIn):
 
 class TripIn(Schema):
     name: str
+    description: str = ""
     start_date: date
     end_date: date | None = None
     budget_total: float = 0
@@ -47,6 +48,9 @@ class TripIn(Schema):
 class TripOut(TripIn):
     id: int
     user_id: int
+    cover_photo: str | None = None
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
 
 
 class StopIn(Schema):
