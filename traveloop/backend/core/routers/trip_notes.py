@@ -11,7 +11,7 @@ router = Router(tags=["notes"], auth=JWTAuth())
 @router.get("/trips/{trip_id}", response=list[TripNoteOut])
 def list_notes(request, trip_id: int):
     trip = get_object_or_404(Trip, id=trip_id, user=request.user)
-    return TripNote.objects.filter(trip=trip).order_by("-id")
+    return TripNote.objects.filter(trip=trip).order_by("-created_at", "-id")
 
 
 @router.post("/trips/{trip_id}", response=TripNoteOut)
