@@ -8,8 +8,9 @@ import BudgetPage from "./pages/BudgetPage";
 import CitySearch from "./pages/CitySearch";
 import CreateTripPage from "./pages/create-trip";
 import DashboardPage from "./pages/dashboard";
-import ItineraryBuilder from "./pages/ItineraryBuilder";
+import ItineraryBuilder from "./pages/itinerary-builder";
 import ItineraryView from "./pages/ItineraryView";
+import GoogleCallback from "./pages/GoogleCallback";
 import LoginPage from "./pages/LoginPage";
 import MyTripsPage from "./pages/MyTripsPage";
 import NotesPage from "./pages/NotesPage";
@@ -67,12 +68,14 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/auth/google/callback" element={<GoogleCallback />} />
         <Route element={<ProtectedRoute />}>
           <Route element={<AppLayout />}>
             <Route index element={<DashboardPage />} />
             <Route path="/trips" element={<MyTripsPage />} />
             <Route path="/trips/new" element={<CreateTripPage />} />
             <Route path="/itinerary/builder" element={<ItineraryBuilder />} />
+            <Route path="/itinerary/builder/:tripId" element={<ItineraryBuilder />} />
             <Route path="/itinerary/view" element={<ItineraryView />} />
             <Route path="/search/cities" element={<CitySearch />} />
             <Route path="/search/activities" element={<ActivitySearch />} />

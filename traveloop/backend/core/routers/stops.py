@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from ninja import Router
+from ninja import Router, Schema
 from ninja_jwt.authentication import JWTAuth
 
 from core.models import City, Stop, Trip
@@ -36,3 +36,17 @@ def delete_stop(request, stop_id: int):
     stop = get_object_or_404(Stop, id=stop_id, trip__user=request.user)
     stop.delete()
     return 204, None
+
+
+class ReorderIn(Schema):
+    ordered_ids: list[int]
+
+
+@router.put("/trips/{trip_id}/reorder", response=list[StopOut])
+def reorder_stops(request, trip_id: int, payload: ReorderIn):
+    """Bulk-update stop order based on frontend drag-and-drop."""
+    trip = get_object_or_404(Trip, id=trip_id, user=request.user)
+    for idx, stop_id in enumerate(payload.ordered_ids):
+        Stop.objects.filter(id=stop_id, trip=trip).update(order=idx)
+    return Stop.objects.filter(trip=trip).order_by("order", "id")
+

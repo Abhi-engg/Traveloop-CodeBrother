@@ -28,23 +28,23 @@ export const useTrip = (tripId) =>
 
 /* ─── Create trip ────────────────────────────────────────── */
 const createTrip = async ({ data, coverPhoto }) => {
-  const formData = new FormData();
-
-  // Append all trip fields
-  Object.entries(data).forEach(([key, value]) => {
-    if (value !== null && value !== undefined && value !== "") {
-      formData.append(key, value);
-    }
-  });
-
-  // Append cover photo if provided
+  // When there's a cover photo, use FormData (multipart)
   if (coverPhoto) {
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && value !== "") {
+        formData.append(key, value);
+      }
+    });
     formData.append("cover_photo", coverPhoto);
+    const response = await apiClient.post("/trips/with-photo", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
   }
 
-  const response = await apiClient.post("/trips/", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  // No photo — send as JSON (cleaner type handling)
+  const response = await apiClient.post("/trips/", data);
   return response.data;
 };
 

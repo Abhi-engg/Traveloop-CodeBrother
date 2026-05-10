@@ -2,6 +2,7 @@ from ninja_extra import NinjaExtraAPI
 from ninja_jwt.controller import NinjaJWTDefaultController
 
 from core.routers.activities import router as activities_router
+from core.routers.auth import router as auth_router
 from core.routers.budgets import router as budgets_router
 from core.routers.cities import router as cities_router
 from core.routers.dashboard import router as dashboard_router
@@ -14,6 +15,7 @@ from core.routers.trips import router as trips_router
 api = NinjaExtraAPI(title="Traveloop API")
 api.register_controllers(NinjaJWTDefaultController)
 
+api.add_router("auth", auth_router)
 api.add_router("dashboard", dashboard_router)
 api.add_router("trips", trips_router)
 api.add_router("stops", stops_router)
