@@ -8,8 +8,8 @@ const MoodPicker = ({ value, onChange }) => {
           key={mood}
           className={`rounded-full border px-4 py-2 text-sm ${
             value === mood
-              ? "border-slate-900 bg-slate-900 text-white"
-              : "bg-white"
+              ? "border-transparent bg-gradient-to-r from-[var(--coral)] via-[var(--coral-soft)] to-[var(--coral-sun)] text-white"
+              : "border-[var(--border)] bg-white text-[var(--slate)]"
           }`}
           onClick={() => onChange?.(mood)}
           type="button"

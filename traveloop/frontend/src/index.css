@@ -1,1 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Playfair+Display:wght@600;700&display=swap");
 @import "tailwindcss";
+
+:root {
+	--coral: #ff6b47;
+	--coral-soft: #ff8f6b;
+	--coral-sun: #ffb347;
+	--indigo: #1a1035;
+	--indigo-deep: #0f0b1e;
+	--sand: #f5e6c8;
+	--cream: #fdfaf5;
+	--slate: #4a5568;
+	--teal: #38b2ac;
+	--lavender: #a78bfa;
+	--border: rgba(26, 16, 53, 0.12);
+	--shadow: 0 20px 40px -30px rgba(26, 16, 53, 0.6);
+	--font-display: "Playfair Display", "Times New Roman", serif;
+	--font-body: "DM Sans", "Segoe UI", sans-serif;
+	--font-mono: "JetBrains Mono", "Consolas", monospace;
+}
+
+@layer base {
+	body {
+		font-family: var(--font-body);
+		color: var(--indigo);
+		background: var(--cream);
+		letter-spacing: 0.01em;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4 {
+		font-family: var(--font-display);
+		color: var(--indigo);
+	}
+
+	code {
+		font-family: var(--font-mono);
+	}
+}

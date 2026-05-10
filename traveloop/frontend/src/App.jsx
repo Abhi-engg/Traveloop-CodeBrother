@@ -19,8 +19,32 @@ import SharedTrip from "./pages/SharedTrip";
 
 const AppLayout = () => {
   return (
-    <div className="min-h-screen bg-slate-50 pb-20">
-      <div className="mx-auto max-w-5xl px-6 py-8">
+    <div className="min-h-screen bg-[var(--cream)] pb-24">
+      <div className="absolute inset-x-0 top-0 h-72 bg-gradient-to-br from-[var(--coral)] via-[var(--coral-soft)] to-[var(--coral-sun)] opacity-15" />
+      <header className="relative mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
+        <div className="flex items-center gap-3">
+          <div className="grid h-10 w-10 place-items-center rounded-2xl bg-[var(--indigo)] text-white">
+            TL
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-[0.3em] text-[var(--slate)]">
+              traveloop
+            </p>
+            <p className="text-lg font-semibold text-[var(--indigo)]">
+              Dream it. Plan it. Live it.
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-3 text-sm">
+          <button className="rounded-full border border-[var(--border)] px-4 py-2">
+            New trip
+          </button>
+          <button className="rounded-full bg-[var(--indigo)] px-4 py-2 text-white">
+            Share
+          </button>
+        </div>
+      </header>
+      <div className="relative mx-auto max-w-6xl px-6 pb-12">
         <Outlet />
       </div>
       <BottomNav />
