@@ -6,6 +6,9 @@ class User(AbstractUser):
     mood_profile = models.JSONField(default=dict, blank=True)
     dna_embedding = models.JSONField(null=True, blank=True)
     language = models.CharField(max_length=50, blank=True)
+    photo_url = models.TextField(blank=True, default="")
+    privacy = models.CharField(max_length=20, default="private")
+    saved_destinations = models.JSONField(default=list, blank=True)
 
     def __str__(self) -> str:
         return self.username

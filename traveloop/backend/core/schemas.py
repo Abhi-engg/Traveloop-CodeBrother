@@ -11,6 +11,20 @@ class UserOut(Schema):
     language: str | None = None
 
 
+class UserProfileIn(Schema):
+    name: str
+    email: str
+    language: str | None = None
+    photo_url: str | None = ""
+    privacy: str | None = "private"
+    saved_destinations: list[str] = []
+
+
+class UserProfileOut(UserProfileIn):
+    id: int
+    username: str
+
+
 class CityIn(Schema):
     name: str
     country: str
@@ -110,3 +124,4 @@ class TripNoteIn(Schema):
 class TripNoteOut(TripNoteIn):
     id: int
     trip_id: int
+    created_at: datetime | None = None

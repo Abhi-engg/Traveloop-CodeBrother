@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiClient } from "../api/client";
 import { useAuth } from "../hooks/useAuth";
-
-const PROFILE_STORAGE_KEY = "traveloop_profile";
-const DESTINATIONS_STORAGE_KEY = "traveloop_saved_destinations";
+import { useProfile } from "../hooks/useProfile";
 
 const LANGUAGE_OPTIONS = [
   "English",
@@ -15,49 +15,48 @@ const LANGUAGE_OPTIONS = [
 
 const DEFAULT_DESTINATIONS = ["Lisbon", "Seoul", "Reykjavik"];
 
-const getStoredValue = (key, fallback) => {
-  const raw = localStorage.getItem(key);
-  if (!raw) {
-    return fallback;
-  }
-  try {
-    return JSON.parse(raw);
-  } catch (error) {
-    return fallback;
-  }
-};
-
 const ProfilePage = () => {
+  const queryClient = useQueryClient();
   const auth = useAuth();
   const user = auth?.user || null;
   const logout = auth?.logout || null;
+  const { data: profileData, isLoading: profileLoading } = useProfile();
 
-  const [profile, setProfile] = useState(() =>
-    getStoredValue(PROFILE_STORAGE_KEY, {
-      name: user?.username || "",
-      email: user?.email || "",
-      language: "English",
-      photo: "",
-      privacy: "private",
-    }),
-  );
-  const [savedDestinations, setSavedDestinations] = useState(() =>
-    getStoredValue(DESTINATIONS_STORAGE_KEY, DEFAULT_DESTINATIONS),
+  const [profile, setProfile] = useState({
+    name: user?.username || "",
+    email: user?.email || "",
+    language: "English",
+    photo_url: "",
+    privacy: "private",
+  });
+  const [savedDestinations, setSavedDestinations] = useState(
+    DEFAULT_DESTINATIONS,
   );
   const [newDestination, setNewDestination] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
-    if (!user) {
+    if (hasLoaded || profileLoading) {
       return;
     }
-    setProfile((prev) => ({
-      ...prev,
-      name: prev.name || user.username || "",
-      email: prev.email || user.email || "",
-    }));
-  }, [user]);
+    if (profileData) {
+      setProfile({
+        name: profileData.name || user?.username || "",
+        email: profileData.email || user?.email || "",
+        language: profileData.language || "English",
+        photo_url: profileData.photo_url || "",
+        privacy: profileData.privacy || "private",
+      });
+      setSavedDestinations(
+        profileData.saved_destinations?.length
+          ? profileData.saved_destinations
+          : DEFAULT_DESTINATIONS,
+      );
+      setHasLoaded(true);
+    }
+  }, [profileData, profileLoading, hasLoaded, user]);
 
   const packedProfile = useMemo(
     () => ({
@@ -83,10 +82,21 @@ const ProfilePage = () => {
     }
     const reader = new FileReader();
     reader.onload = () => {
-      handleProfileChange("photo", String(reader.result || ""));
+      handleProfileChange("photo_url", String(reader.result || ""));
     };
     reader.readAsDataURL(file);
   };
+
+  const updateMutation = useMutation({
+    mutationFn: (payload) => apiClient.put("/profile/", payload),
+    onSuccess: (response) => {
+      queryClient.setQueryData(["profile"], response.data);
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: () => apiClient.delete("/profile/"),
+  });
 
   const handleSave = async (event) => {
     event.preventDefault();
@@ -95,15 +105,25 @@ const ProfilePage = () => {
       return;
     }
     setIsSaving(true);
-    localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(packedProfile));
-    localStorage.setItem(
-      DESTINATIONS_STORAGE_KEY,
-      JSON.stringify(savedDestinations),
+    updateMutation.mutate(
+      {
+        name: packedProfile.name,
+        email: packedProfile.email,
+        language: profile.language,
+        photo_url: profile.photo_url,
+        privacy: profile.privacy,
+        saved_destinations: savedDestinations,
+      },
+      {
+        onSuccess: () => {
+          setStatusMessage("Profile saved.");
+        },
+        onError: () => {
+          setStatusMessage("Unable to save profile.");
+        },
+        onSettled: () => setIsSaving(false),
+      },
     );
-    setTimeout(() => {
-      setIsSaving(false);
-      setStatusMessage("Profile saved.");
-    }, 400);
   };
 
   const handleAddDestination = (event) => {
@@ -136,20 +156,25 @@ const ProfilePage = () => {
     if (!shouldDelete) {
       return;
     }
-    localStorage.removeItem(PROFILE_STORAGE_KEY);
-    localStorage.removeItem(DESTINATIONS_STORAGE_KEY);
-    if (logout) {
-      logout();
-    }
-    setProfile({
-      name: "",
-      email: "",
-      language: "English",
-      photo: "",
-      privacy: "private",
+    deleteMutation.mutate(undefined, {
+      onSuccess: () => {
+        if (logout) {
+          logout();
+        }
+        setProfile({
+          name: "",
+          email: "",
+          language: "English",
+          photo_url: "",
+          privacy: "private",
+        });
+        setSavedDestinations([]);
+        setStatusMessage("Account deleted.");
+      },
+      onError: () => {
+        setStatusMessage("Unable to delete account.");
+      },
     });
-    setSavedDestinations([]);
-    setStatusMessage("Account data cleared locally.");
   };
 
   return (
@@ -168,9 +193,9 @@ const ProfilePage = () => {
 
         <div className="mt-6 flex flex-wrap items-center gap-5">
           <div className="relative h-20 w-20 overflow-hidden rounded-full bg-[var(--sand)]">
-            {profile.photo ? (
+            {profile.photo_url ? (
               <img
-                src={profile.photo}
+                src={profile.photo_url}
                 alt="Profile"
                 className="h-full w-full object-cover"
               />
@@ -197,8 +222,8 @@ const ProfilePage = () => {
               <button
                 type="button"
                 className="rounded-full border border-[var(--border)] px-4 py-2 text-xs font-semibold text-[var(--slate)]"
-                onClick={() => handleProfileChange("photo", "")}
-                disabled={!profile.photo}
+                onClick={() => handleProfileChange("photo_url", "")}
+                disabled={!profile.photo_url}
               >
                 Remove
               </button>
@@ -274,11 +299,11 @@ const ProfilePage = () => {
           <button
             type="submit"
             className={`rounded-full px-4 py-2 text-xs font-semibold transition ${
-              isSaving
+              isSaving || profileLoading
                 ? "cursor-not-allowed bg-[var(--border)] text-[var(--slate)]"
                 : "bg-[var(--indigo)] text-white"
             }`}
-            disabled={isSaving}
+            disabled={isSaving || profileLoading}
           >
             {isSaving ? "Saving..." : "Save changes"}
           </button>
@@ -374,7 +399,7 @@ const ProfilePage = () => {
             </button>
           </div>
           <p className="mt-3 text-xs text-[var(--slate)]">
-            Deleting only clears local data in this demo.
+            Deleting removes your account and data.
           </p>
         </div>
       </div>
