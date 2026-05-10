@@ -22,7 +22,6 @@ INSTALLED_APPS = [
     "ninja",
     "ninja_extra",
     "ninja_jwt",
-    "pgvector",
     "core",
 ]
 

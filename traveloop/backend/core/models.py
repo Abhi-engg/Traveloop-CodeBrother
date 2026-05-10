@@ -1,11 +1,10 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from pgvector.django import VectorField
 
 
 class User(AbstractUser):
     mood_profile = models.JSONField(default=dict, blank=True)
-    dna_embedding = VectorField(dimensions=384, null=True, blank=True)
+    dna_embedding = models.JSONField(null=True, blank=True)
     language = models.CharField(max_length=50, blank=True)
 
     def __str__(self) -> str:
@@ -17,7 +16,7 @@ class City(models.Model):
     country = models.CharField(max_length=200)
     cost_index = models.FloatField(default=0)
     popularity = models.IntegerField(default=0)
-    embedding = VectorField(dimensions=384, null=True, blank=True)
+    embedding = models.JSONField(null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.name}, {self.country}"
@@ -31,7 +30,7 @@ class Activity(models.Model):
     category = models.CharField(max_length=100, blank=True)
     avg_cost_usd = models.FloatField(default=0)
     duration_hours = models.FloatField(default=0)
-    embedding = VectorField(dimensions=384, null=True, blank=True)
+    embedding = models.JSONField(null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.name} ({self.city_id})"
