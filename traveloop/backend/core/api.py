@@ -7,6 +7,7 @@ from core.routers.budgets import router as budgets_router
 from core.routers.cities import router as cities_router
 from core.routers.dashboard import router as dashboard_router
 from core.routers.google_auth import router as google_auth_router
+from core.routers.profile import router as profile_router
 from core.routers.packing_items import router as packing_items_router
 from core.routers.stop_activities import router as stop_activities_router
 from core.routers.stops import router as stops_router
@@ -23,6 +24,7 @@ api.add_router("stops", stops_router)
 api.add_router("activities", activities_router)
 api.add_router("cities", cities_router)
 api.add_router("auth", google_auth_router)
+api.add_router("profile", profile_router)
 api.add_router("stop-activities", stop_activities_router)
 api.add_router("budget-items", budgets_router)
 api.add_router("packing-items", packing_items_router)
