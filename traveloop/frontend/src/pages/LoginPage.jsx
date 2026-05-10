@@ -1,9 +1,13 @@
+import { useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { apiClient } from "../api/client";
 import { useAuth } from "../hooks/useAuth";
 
 const LoginPage = () => {
   const { login } = useAuth();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const {
     register,
     handleSubmit,
@@ -16,6 +20,19 @@ const LoginPage = () => {
       password: values.password,
     });
     login(response.data.access);
+    navigate("/");
+  };
+
+  useEffect(() => {
+    const token = searchParams.get("token");
+    if (token) {
+      login(token);
+      navigate("/", { replace: true });
+    }
+  }, [login, navigate, searchParams]);
+
+  const handleGoogleLogin = () => {
+    window.location.href = "http://localhost:8000/api/auth/google/login";
   };
 
   return (
@@ -96,6 +113,13 @@ const LoginPage = () => {
             disabled={isSubmitting}
           >
             {isSubmitting ? "Signing in..." : "Sign in"}
+          </button>
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            className="mt-3 w-full rounded-lg border border-[var(--border)] px-4 py-2 text-sm font-semibold"
+          >
+            Continue with Google
           </button>
           <p className="mt-4 text-xs text-[var(--slate)]">
             New here?{" "}
